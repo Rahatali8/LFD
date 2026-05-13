@@ -3,7 +3,7 @@ import hashlib
 from datetime import datetime, timedelta, timezone
 from typing import Any
 from passlib.context import CryptContext
-from jose import jwt
+import jwt
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -31,7 +31,7 @@ def create_access_token(subject: Any, expires_delta: timedelta | None = None) ->
 
 
 def decode_token(token: str) -> dict:
-    return jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    return jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM], options={"verify_exp": True})
 
 
 def generate_api_key(mode: str = "test") -> tuple[str, str]:
